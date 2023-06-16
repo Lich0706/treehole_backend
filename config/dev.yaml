@@ -4,3 +4,10 @@ app:
 
 server:
   port: 3000
+
+db:
+  type: "mysql"
+  name: "treehole"
+  user: "root"
+  host: "127.0.0.1:3306"
+  pwd: "example"
