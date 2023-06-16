@@ -1,7 +1,13 @@
 app:
   env:  "local"
-  consumerbroker: "first.example.com:9092"
-  producerbroker: "second.example.com:9092"
-  #linetoken: "sdjfnasklJBS8asdnas83rq2mSJKnadfdmGFVJGSHBd3845ulzdmnfvsd"
+  jwt: "example"
 
-port: 3000
+server:
+  port: 3000
+
+db:
+  type: "mysql"
+  name: "treehole"
+  user: "root"
+  host: "127.0.0.1:3306"
+  pwd: "admin"
