@@ -2,8 +2,11 @@ package main
 
 import (
 	"TreeHole/treehole_backend/config"
+	"TreeHole/treehole_backend/internal/api/router"
 	"TreeHole/treehole_backend/internal/db"
 	utils "TreeHole/treehole_backend/util"
+	"fmt"
+	"net/http"
 
 	"go.uber.org/zap"
 )
@@ -27,9 +30,13 @@ func main() {
 		zap.String("env", config.GetString("app.env")))
 
 	// Init Server
+	router := router.InitRouter()
 	port := config.GetInt("server.port")
-	utils.Logger.Info("Configs",
-		zap.Int("port", port))
+	s := &http.Server{
+		Addr:    fmt.Sprintf(":%d", port),
+		Handler: router,
+	}
+	s.ListenAndServe()
 
 	// Init DB
 	db.Init(config)
