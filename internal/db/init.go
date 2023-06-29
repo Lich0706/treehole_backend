@@ -1,7 +1,8 @@
 package db
 
 import (
-	utils "TreeHole/treehole_backend/util"
+	"TreeHole/treehole_backend/internal/dao/model"
+	"TreeHole/treehole_backend/utils"
 	"fmt"
 
 	"github.com/spf13/viper"
@@ -29,10 +30,21 @@ func Init(config *viper.Viper) {
 		dbName)
 
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	InitTables(DB)
 	if err != nil {
 		utils.Logger.Error("Init mysql db",
 			zap.String("error", err.Error()))
 	} else {
 		utils.Logger.Info("Init mysql successfully")
 	}
+	// return DB, err
+}
+
+func InitTables(DB *gorm.DB) {
+	if !(DB.Migrator().HasTable(&model.Message{})) {
+		DB.Set("gorm:table_options", "ENGINE=InnoDB").Migrator().CreateTable(&model.Message{})
+	}
+	// if !(DB.Migrator().HasTable(&model.User{})) {
+	// 	DB.Set("gorm:table_options", "ENGINE=InnoDB").Migrator().CreateTable(&model.User{})
+	// }
 }

@@ -3,8 +3,9 @@ package main
 import (
 	"TreeHole/treehole_backend/config"
 	"TreeHole/treehole_backend/internal/api/router"
+	"TreeHole/treehole_backend/internal/app"
 	"TreeHole/treehole_backend/internal/db"
-	utils "TreeHole/treehole_backend/util"
+	"TreeHole/treehole_backend/utils"
 	"fmt"
 	"net/http"
 
@@ -29,6 +30,10 @@ func main() {
 	utils.Logger.Info("Configs",
 		zap.String("env", config.GetString("app.env")))
 
+	// Init DB
+	db.Init(config)
+	app.InitDao()
+
 	// Init Server
 	router := router.InitRouter()
 	port := config.GetInt("server.port")
@@ -37,9 +42,6 @@ func main() {
 		Handler: router,
 	}
 	s.ListenAndServe()
-
-	// Init DB
-	db.Init(config)
 
 	defer func() {
 		utils.Logger.Info("Closing mysql connection")

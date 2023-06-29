@@ -21,4 +21,8 @@ func InitRouter() *gin.Engine {
 func Register(r *gin.Engine) {
 	g := r.Group("/api")
 	g.GET("/ping", handler.Ping)
+	{
+		g := g.Group("/message")
+		g.GET("/list", handler.ListMessage)
+	} // /message
 }
