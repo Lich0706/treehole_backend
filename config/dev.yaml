@@ -10,4 +10,4 @@ db:
   name: "treehole"
   user: "root"
   host: "127.0.0.1:3306"
-  pwd: "admin"
+  pwd: "example"
