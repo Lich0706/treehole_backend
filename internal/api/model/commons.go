@@ -5,6 +5,10 @@ type ErrorRes struct {
 	Error string `json:"error" example:"message"`
 }
 
+type GetAuthResponse struct {
+	Token string `json:"token"`
+}
+
 type GetSingleRecordResponse struct {
 	// Get single record response
 	Data interface{} `json:"data"`

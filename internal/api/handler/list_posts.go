@@ -9,15 +9,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ListMessage(c *gin.Context) {
+func ListPosts(c *gin.Context) {
 	// err = c.ShouldBind(&req)
 	// if err != nil {
 	// 	c.JSON(http.StatusBadRequest, model.ErrorRes{Error: err.Error()})
 	// }
 
-	ret, err := app.MessageDao.ListAll(c)
+	ret, err := app.PostDao.ListAll(c)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, model.ErrorRes{Error: err.Error()})
+		return
 	}
 
 	response := model.GetRecordsResponse{}

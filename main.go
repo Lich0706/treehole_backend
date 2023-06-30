@@ -20,7 +20,7 @@ func main() {
 	// Initialize logger
 	utils.InitializeLogger()
 	// Load Config
-	config, err := config.Init()
+	appConfig, err := config.Init()
 	if err != nil {
 		utils.Logger.Error(err.Error())
 	}
@@ -28,15 +28,15 @@ func main() {
 		zap.String("ver", Version))
 	utils.Logger.Info("Showing Configs")
 	utils.Logger.Info("Configs",
-		zap.String("env", config.GetString("app.env")))
+		zap.String("env", appConfig.GetString("app.env")))
 
 	// Init DB
-	db.Init(config)
+	db.Init(appConfig)
 	app.InitDao()
 
 	// Init Server
 	router := router.InitRouter()
-	port := config.GetInt("server.port")
+	port := appConfig.GetInt("server.port")
 	s := &http.Server{
 		Addr:    fmt.Sprintf(":%d", port),
 		Handler: router,

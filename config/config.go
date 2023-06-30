@@ -8,28 +8,31 @@ import (
 )
 
 var (
-	env    string
-	config *viper.Viper
+	env       string
+	JwtSecret string
+	Config    *viper.Viper
 )
 
 func Init() (*viper.Viper, error) {
 	// Initialize Flag and Viper
-	config = viper.New()
+	Config = viper.New()
 	flag.Int("flagname", 1234, "help message for flagname")
 	flag.StringVar(&env, "env", "local", "local|dev|prod")
 
 	// Parse and Bind Flags
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
 	pflag.Parse()
-	config.BindPFlags(pflag.CommandLine)
+	Config.BindPFlags(pflag.CommandLine)
 
 	// Read specified config file
-	config.SetConfigName(env)
-	config.SetConfigType("yaml")
-	config.AddConfigPath(".")
-	config.AddConfigPath("./config/")
-	err := config.ReadInConfig()
-	return config, err
+	Config.SetConfigName(env)
+	Config.SetConfigType("yaml")
+	Config.AddConfigPath(".")
+	Config.AddConfigPath("./config/")
+	env = Config.GetString("app.env")
+	JwtSecret = Config.GetString("app.jwt")
+	err := Config.ReadInConfig()
+	return Config, err
 
 	// viper.AutomaticEnv()
 	// viper.BindPFlag("port", serverCmd.Flags().Lookup("port"))
