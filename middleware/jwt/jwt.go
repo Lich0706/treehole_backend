@@ -15,7 +15,7 @@ func JWT() gin.HandlerFunc {
 		var errMsg string
 
 		code = 200
-		token := c.Query("token")
+		token := c.Request.Header.Get("token")
 		if token == "" {
 			code = 400
 			errMsg = "Token缺失"

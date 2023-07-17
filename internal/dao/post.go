@@ -17,9 +17,18 @@ func NewPostDao(DB *gorm.DB) *PostDao {
 	return &PostDao{DB: DB}
 }
 
-func (m *PostDao) ListAll(ctx context.Context) ([]*model.Post, error) {
+func (p *PostDao) CreateNewPost(ctx context.Context, post model.Post) error {
+	res := p.DB.Create(&post)
+	if res.Error != nil {
+		utils.Logger.Error("NewPostDao.CreateNewPost",
+			zap.String("error", res.Error.Error()))
+	}
+	return res.Error
+}
+
+func (p *PostDao) ListAll(ctx context.Context) ([]*model.Post, error) {
 	posts := []*model.Post{}
-	res := m.DB.Find(&posts)
+	res := p.DB.Find(&posts)
 	if res.Error != nil {
 		utils.Logger.Error("NewPostDao.ListAll",
 			zap.String("error", res.Error.Error()))

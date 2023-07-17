@@ -44,7 +44,10 @@ func InitTables(DB *gorm.DB) {
 	if !(DB.Migrator().HasTable(&model.Post{})) {
 		DB.Set("gorm:table_options", "ENGINE=InnoDB").Migrator().CreateTable(&model.Post{})
 	}
-	// if !(DB.Migrator().HasTable(&model.User{})) {
-	// 	DB.Set("gorm:table_options", "ENGINE=InnoDB").Migrator().CreateTable(&model.User{})
-	// }
+	if !(DB.Migrator().HasTable(&model.User{})) {
+		DB.Set("gorm:table_options", "ENGINE=InnoDB").Migrator().CreateTable(&model.User{})
+	}
+	if !(DB.Migrator().HasTable(&model.HashedEmail{})) {
+		DB.Set("gorm:table_options", "ENGINE=InnoDB").Migrator().CreateTable(&model.HashedEmail{})
+	}
 }

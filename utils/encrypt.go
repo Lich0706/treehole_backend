@@ -5,6 +5,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/sha256"
+	"encoding/base64"
 	"errors"
 )
 
@@ -39,7 +40,7 @@ func AESEncrypted(plainText string, keyStr string) (string, error) {
 	cryptedData := make([]byte, len(encryptedData))
 	cbc := cipher.NewCBCEncrypter(c, key[:blockSize])
 	cbc.CryptBlocks(cryptedData, encryptedData)
-	return string(cryptedData), nil
+	return base64.URLEncoding.EncodeToString(cryptedData), nil
 }
 
 func AESDecrypted(plainText string, keyStr string) (string, error) {
@@ -52,9 +53,11 @@ func AESDecrypted(plainText string, keyStr string) (string, error) {
 	}
 	blockSize := c.BlockSize()
 
-	cryptedData := make([]byte, len(([]byte(plainText))))
+	cipherText, _ := base64.URLEncoding.DecodeString(plainText)
+
+	cryptedData := make([]byte, len(cipherText))
 	cbc := cipher.NewCBCDecrypter(c, key[:blockSize])
-	cbc.CryptBlocks(cryptedData, []byte(plainText))
+	cbc.CryptBlocks(cryptedData, cipherText)
 
 	cryptedData, err = UnPadding(cryptedData)
 	if err != nil {

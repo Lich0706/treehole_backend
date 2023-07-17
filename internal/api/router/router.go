@@ -21,13 +21,17 @@ func InitRouter() *gin.Engine {
 }
 
 func Register(r *gin.Engine) {
-	r.GET("/auth", auth.GetAuth)
 	g := r.Group("/api")
 	g.GET("/ping", handler.Ping)
+	g.GET("/auth", auth.GetAuth)
 	apiv1 := g.Group("/v1")
-	apiv1.Use(jwt.JWT())
+	{
+		g := apiv1.Group("/user")
+		g.POST("/create", handler.CreateUser)
+	}
 	{
 		g := apiv1.Group("/post")
+		g.Use(jwt.JWT())
 		g.GET("/list", handler.ListPosts)
-	} // /message
+	} // /post
 }
