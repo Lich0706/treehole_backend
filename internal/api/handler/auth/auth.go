@@ -25,9 +25,9 @@ func GetAuth(c *gin.Context) {
 	}
 
 	email := req.Email
-	hashedPwd := req.HashedPwd
+	pwd := req.Password
 
-	encryptedEmail, err := utils.AESEncrypted(email, hashedPwd)
+	encryptedEmail, err := utils.AESEncrypted(email, pwd)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, model.ErrorRes{Error: err.Error()})
 		return
@@ -65,6 +65,7 @@ func GetAuth(c *gin.Context) {
 	}
 
 	c.JSON(200, model.GetAuthResponse{
-		Token: token,
+		Username: user.Name,
+		Token:    token,
 	})
 }

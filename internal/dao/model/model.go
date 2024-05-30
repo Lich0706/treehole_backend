@@ -27,8 +27,8 @@ type User struct {
 	DeletedAt     gorm.DeletedAt `gorm:"index"`
 }
 
-type HashedEmail struct {
-	HashedEmail string `gorm:"primaryKey;type:char(64) NOT NULL"`
+type Email struct {
+	Email string `gorm:"primaryKey;type:char(64) NOT NULL"`
 }
 
 type Post struct {

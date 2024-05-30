@@ -25,18 +25,17 @@ func CreateUser(c *gin.Context) {
 	}
 
 	email := req.Email
-	hashedPwd := req.HashedPwd
-	hashedEmail := req.HashedEmail
+	password := req.Password
 
-	encryptedEmail, err := utils.AESEncrypted(email, hashedPwd)
+	encryptedEmail, err := utils.AESEncrypted(email, password)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, model.ErrorRes{Error: err.Error()})
 		return
 	}
 
-	err = app.HashedEmailDao.FindOne(c, hashedEmail)
+	err = app.EmailDao.FindOne(c, email)
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		err = app.HashedEmailDao.Create(c, hashedEmail)
+		err = app.EmailDao.Create(c, email)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, model.ErrorRes{Error: err.Error()})
 			return
@@ -55,13 +54,20 @@ func CreateUser(c *gin.Context) {
 	err = app.UserDao.CreateNormalUser(c, newUser)
 
 	if err != nil {
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, model.ErrorRes{Error: err.Error()})
-			return
-		}
+		c.JSON(http.StatusInternalServerError, model.ErrorRes{Error: err.Error()})
+		return
 	}
 
-	c.JSON(200, gin.H{
-		"message": "successfully created user",
+	token, err := utils.GenerateToken(newUser.Name, newUser.EncrptedEmail)
+	if err != nil {
+		c.JSON(-1, model.ErrorRes{
+			Error: errorsMsg.ERROR_GEN_TOKEN,
+		})
+		return
+	}
+
+	c.JSON(200, model.GetAuthResponse{
+		Username: newUser.Name,
+		Token:    token,
 	})
 }

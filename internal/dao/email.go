@@ -9,17 +9,17 @@ import (
 	"gorm.io/gorm"
 )
 
-type HashedEmailDao struct {
+type EmailDao struct {
 	DB *gorm.DB
 }
 
-func NewHashedEmailDao(DB *gorm.DB) *HashedEmailDao {
-	return &HashedEmailDao{DB: DB}
+func NewEmailDao(DB *gorm.DB) *EmailDao {
+	return &EmailDao{DB: DB}
 }
 
-func (m *HashedEmailDao) Create(ctx context.Context, hashedEmail string) error {
-	res := m.DB.Create(&model.HashedEmail{
-		HashedEmail: hashedEmail,
+func (m *EmailDao) Create(ctx context.Context, email string) error {
+	res := m.DB.Create(&model.Email{
+		Email: email,
 	})
 	if res.Error != nil {
 		utils.Logger.Error("NewHashedEmailDao.Create",
@@ -28,9 +28,9 @@ func (m *HashedEmailDao) Create(ctx context.Context, hashedEmail string) error {
 	return res.Error
 }
 
-func (m *HashedEmailDao) FindOne(ctx context.Context, hashedEmail string) error {
-	res := m.DB.First(&model.HashedEmail{
-		HashedEmail: hashedEmail,
+func (m *EmailDao) FindOne(ctx context.Context, email string) error {
+	res := m.DB.First(&model.Email{
+		Email: email,
 	})
 	if res.Error != nil {
 		utils.Logger.Error("NewHashedEmailDao.Find",
