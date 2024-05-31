@@ -37,7 +37,7 @@ func Register(r *gin.Engine) {
 	{
 		g := apiv1.Group("/user")
 		g.POST("/create", handler.CreateUser)
-		g.GET("/auth", auth.GetAuth)
+		g.POST("/auth", auth.GetAuth)
 	}
 	{
 		g := apiv1.Group("/post")
