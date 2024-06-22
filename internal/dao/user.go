@@ -26,11 +26,11 @@ func (u *UserDao) CreateNormalUser(ctx context.Context, user model.User) error {
 	return res.Error
 }
 
-func (u *UserDao) FindOne(ctx context.Context, user model.User) (*model.User, error) {
+func (u *UserDao) FindByEncryptInfo(ctx context.Context, encryptInfo string) (*model.User, error) {
 	var result model.User
-	res := u.DB.Model(&user).First(&result)
+	res := u.DB.Where("encrpted_email = ?", encryptInfo).First(&result)
 	if res.Error != nil {
-		utils.Logger.Error("NewUserDao.FindOne",
+		utils.Logger.Error("NewUserDao.FindByEncryptInfo",
 			zap.String("error", res.Error.Error()))
 	}
 	return &result, res.Error

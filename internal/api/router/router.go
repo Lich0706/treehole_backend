@@ -24,12 +24,13 @@ func InitRouter() *gin.Engine {
 func Register(r *gin.Engine) {
 	r.Use(cors.New(cors.Config{
 		AllowOrigins: []string{"*"},
-		AllowMethods: []string{"POST", "PUT", "PATCH", "DELETE"},
+		AllowMethods: []string{"GET", "POST", "PUT", "PATCH", "DELETE"},
 		AllowHeaders: []string{
 			"Content-Type",
 			"access-control-allow-origin",
 			"access-control-allow-headers",
-			"Authorization"},
+			"Authorization",
+			"token"},
 	}))
 	g := r.Group("/api")
 	g.GET("/ping", handler.Ping)
@@ -43,5 +44,13 @@ func Register(r *gin.Engine) {
 		g := apiv1.Group("/post")
 		g.Use(jwt.JWT())
 		g.GET("/list", handler.ListPosts)
+		g.GET("/get", handler.GetPost)
+		g.POST("/create", handler.CreatePost)
 	} // /post
+	{
+		g := apiv1.Group("/comment")
+		g.Use(jwt.JWT())
+		g.POST("/create", handler.CreateComment)
+		g.GET("/list", handler.ListCommentsByPid)
+	}
 }

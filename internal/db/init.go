@@ -50,4 +50,7 @@ func InitTables(DB *gorm.DB) {
 	if !(DB.Migrator().HasTable(&model.Email{})) {
 		DB.Set("gorm:table_options", "ENGINE=InnoDB").Migrator().CreateTable(&model.Email{})
 	}
+	if !(DB.Migrator().HasTable(&model.Comment{})) {
+		DB.Set("gorm:table_options", "ENGINE=InnoDB").Migrator().CreateTable(&model.Comment{})
+	}
 }

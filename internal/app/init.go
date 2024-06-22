@@ -8,10 +8,11 @@ import (
 )
 
 var (
-	DB       *gorm.DB
-	UserDao  *dao.UserDao
-	PostDao  *dao.PostDao
-	EmailDao *dao.EmailDao
+	DB         *gorm.DB
+	UserDao    *dao.UserDao
+	PostDao    *dao.PostDao
+	EmailDao   *dao.EmailDao
+	CommentDao *dao.CommentDao
 )
 
 func InitDao() {
@@ -19,4 +20,5 @@ func InitDao() {
 	UserDao = dao.NewUserDao(DB)
 	PostDao = dao.NewPostDao(DB)
 	EmailDao = dao.NewEmailDao(DB)
+	CommentDao = dao.NewCommentDao(DB)
 }

@@ -61,6 +61,7 @@ type Comment struct {
 	CreatedAt   time.Time `gorm:"index"`
 	UpdatedAt   time.Time
 	DeletedAt   gorm.DeletedAt `gorm:"index"`
+	Children    []*Comment     `gorm:"-"`
 }
 
 type Report struct {

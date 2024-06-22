@@ -10,6 +10,10 @@ type GetAuthResponse struct {
 	Token    string `json:"token"`
 }
 
+type CreateObjResponse struct {
+	ID int64 `json:"id"`
+}
+
 type GetSingleRecordResponse struct {
 	// Get single record response
 	Data interface{} `json:"data"`

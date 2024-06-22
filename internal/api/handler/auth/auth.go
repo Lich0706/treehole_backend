@@ -33,9 +33,7 @@ func GetAuth(c *gin.Context) {
 		return
 	}
 
-	user, err := app.UserDao.FindOne(c, dbModel.User{
-		EncrptedEmail: encryptedEmail,
-	})
+	user, err := app.UserDao.FindByEncryptInfo(c, encryptedEmail)
 
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
